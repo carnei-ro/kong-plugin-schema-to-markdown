@@ -17,7 +17,8 @@ def _default_map_value(schema_configs):
         return schema_configs['default']
     if not schema_configs['values']['type'] == 'record':
         return {}
-    return schemas_to_example_config_yaml(schema_configs['values']['fields'])
+    key = 'some_key' if schema_configs['keys']['type'] == 'string' else '?'
+    return {key: schemas_to_example_config_yaml(schema_configs['values']['fields'])}
 
 
 def _default_lists_value(schema_configs):
