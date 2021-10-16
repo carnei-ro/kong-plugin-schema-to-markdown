@@ -138,10 +138,8 @@ def schemas_to_md_tables(schemas) -> str:
     additional_dict_tables = []
     config_table = _schemas_to_table(schemas, additional_dict_tables)
     output.append(Tomark.table(config_table))
-    output.append("\n")
     for additional_dict_table in additional_dict_tables:
         for record_name, record_config_table in additional_dict_table.items():
             output.append(f"### record** of {record_name}\n")
             output.append(Tomark.table(record_config_table))
-            output.append("\n")
     return "\n".join(output)
