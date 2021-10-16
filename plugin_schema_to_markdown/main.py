@@ -4,6 +4,7 @@ import sys
 from schemas_to_md_tables import schemas_to_md_tables
 from schemas_to_example_config_yaml import schemas_to_example_config_yaml
 from request_schema import get_schemas_dict
+from request_priority_and_version import get_plugin_priority_and_version
 from custom_yaml_dumper import CUSTOMYAMLDUMPER
 
 try:
@@ -16,6 +17,14 @@ try:
 except:
     kong_schema_endpoint = "http://172.17.0.1:8001/schemas/plugins/"
 
+try:
+    kong_plugins_metadata_endpoint = sys.argv[3]
+except:
+    kong_plugins_metadata_endpoint = "http://172.17.0.1:7999/"
+
+[ plugin_priority, plugin_version ] = get_plugin_priority_and_version(kong_plugins_metadata_endpoint, plugin_name)
+
+print(f"## Plugin Priority\n\nPriority: **{plugin_priority}**\n\n## Plugin Version\n\nVersion: **{plugin_version}**\n")
 
 schemas = get_schemas_dict(kong_schema_endpoint, plugin_name)
 
