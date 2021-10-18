@@ -22,7 +22,7 @@ schemas = get_schemas_dict(kong_schema_endpoint, plugin_name)
 print(schemas_to_md_tables(schemas))
 
 example = {"plugins": [{"name": plugin_name, "enabled": True,
-                        "configs": schemas_to_example_config_yaml(schemas)}]}
+                        "config": schemas_to_example_config_yaml(schemas)}]}
 yaml_example = yaml.dump(example, default_flow_style=False,
                          Dumper=CUSTOMYAMLDUMPER, sort_keys=False)
 print("## Usage\n\n```yaml")
