@@ -17,9 +17,13 @@ def get_plugin_priority_and_version(kong_plugins_metadata_endpoint, plugin_name)
     if r.status_code != 200:
         _print_and_fail(kong_plugins_metadata_endpoint, plugin_name)
 
-    plugin = [f for f in r.json() if f['name'] == plugin_name]
     try:
-      [ priority, version ] = [ plugin[0]['priority'], plugin[0]['version'] ]
+      plugin = r.json()['plugins']['available_on_server'][plugin_name]
+    except:
+      plugin = {}
+
+    try:
+      [ priority, version ] = [ plugin['priority'], plugin['version'] ]
     except:
       _print_and_fail(kong_plugins_metadata_endpoint, plugin_name)
     return [ priority, version ]

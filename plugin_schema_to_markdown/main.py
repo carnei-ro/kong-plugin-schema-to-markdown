@@ -20,7 +20,7 @@ except:
 try:
     kong_plugins_metadata_endpoint = sys.argv[3]
 except:
-    kong_plugins_metadata_endpoint = "http://172.17.0.1:7999/"
+    kong_plugins_metadata_endpoint = "http://172.17.0.1:8001/"
 
 [ plugin_priority, plugin_version ] = get_plugin_priority_and_version(kong_plugins_metadata_endpoint, plugin_name)
 
