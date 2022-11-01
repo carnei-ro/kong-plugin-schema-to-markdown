@@ -134,7 +134,7 @@ def _schemas_to_table(schemas, additional_dict_tables) -> dict:
 
 
 def schemas_to_md_tables(schemas) -> str:
-    output = ["## configs\n"]
+    output = ["## Config\n"]
     additional_dict_tables = []
     config_table = _schemas_to_table(schemas, additional_dict_tables)
     output.append(Tomark.table(config_table))
