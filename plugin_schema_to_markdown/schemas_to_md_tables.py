@@ -6,6 +6,7 @@ PRIMITIVES = ['string', 'number', 'boolean', 'integer']
 VALIDATIONS_KEYWORDS = ['between', 'eq', 'ne', 'gt', 'len_eq', 'len_min', 'len_max', 'match',
                         'not_match', 'match_all', 'match_none', 'match_any', 'starts_with', 'one_of', 'contains', 'is_regex']
 
+has_referenceable = False
 
 def _dump_yaml_to_md_table(obj) -> str:
     s = yaml.dump(obj, default_flow_style=False)
@@ -115,6 +116,10 @@ def _schemas_to_table(schemas, additional_dict_tables) -> dict:
                 table_row['required'] = schema_configs['required'] if schema_configs['type'] != "record" else False
             except:
                 table_row['required'] = False
+            if 'referenceable' in schema_configs and schema_configs['referenceable'] == True:
+                table_row['name'] = f"{table_row['name']}*"
+                global has_referenceable
+                has_referenceable = True
             table_row['validations'] = []
             table_row['default'] = None
             try:
@@ -137,6 +142,8 @@ def schemas_to_md_tables(schemas) -> str:
     output = ["## Config\n"]
     additional_dict_tables = []
     config_table = _schemas_to_table(schemas, additional_dict_tables)
+    if has_referenceable:
+        output.append("&ast; This field is _referenceable_, which means it can be securely stored as a [secret](https://docs.konghq.com/gateway/latest/kong-enterprise/secrets-management/) in a vault. References must follow a [specific format](https://docs.konghq.com/gateway/latest/kong-enterprise/secrets-management/reference-format/).\n")
     output.append(Tomark.table(config_table))
     for additional_dict_table in additional_dict_tables:
         for record_name, record_config_table in additional_dict_table.items():
